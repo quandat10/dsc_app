@@ -4,6 +4,8 @@ import 'package:dsc_app/utils/strings.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/drawer.dart';
+
 class EventScreen extends StatefulWidget {
   static const tag = '/event';
   const EventScreen({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: CustomedDrawer(),
       backgroundColor: BACK_GROUND_COLOR,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black87),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'home_page/home_screen.dart';
 
@@ -13,7 +14,10 @@ class IntroScreen extends StatelessWidget {
       PageViewModel(
         title: 'Welcome to DSC-HUST club',
         body: 'This is DSC app',
-        image: Image.network(testImage),
+        image: CachedNetworkImage(
+          imageUrl: testImage,
+          errorWidget: (ctx, url, error) => const Icon(Icons.error),
+        ),
       ),
       PageViewModel(
         title: 'Welcome to DSC-HUST club',

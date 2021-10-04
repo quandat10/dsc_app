@@ -15,8 +15,7 @@ class CustomedDrawer extends StatelessWidget {
           leading: Icon(icon),
           title: Text(title),
           onTap: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(routeName);
+            Navigator.of(context).pushReplacementNamed(routeName);
           }),
       Divider(),
     ];

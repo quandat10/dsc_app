@@ -7,9 +7,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../widgets/drawer.dart';
-import '../../widgets/home_screen_logo.dart';
+import 'widgets/home_screen_logo.dart';
 import '../../widgets/news_slider.dart';
-import '../../widgets/catogory_list_view.dart';
+import 'widgets/catogory_list_view.dart';
 
 class HomeScreen extends StatefulWidget {
   static const tag = '/home';
@@ -25,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _pinned = true;
   bool _snap = false;
   bool _floating = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,11 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     showDialog(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        title: Text('Show Post'),
+                        title: const Text('Show Post'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(ctx).pop(),
-                            child: Text('OK'),
+                            child: const Text('OK'),
                           )
                         ],
                       ),
@@ -118,14 +119,28 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           errorWidget: (context, url, error) =>
-                              new Icon(Icons.error),
+                              const Icon(Icons.error),
                         ),
                       ),
                     ),
                   ),
                 ),
               );
-            }, childCount: 10),
+            }, childCount: 9),
+          ),
+          SliverToBoxAdapter(
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                alignment: Alignment.center,
+                height: 50,
+                width: double.infinity,
+                child: Text(
+                  'Xem thêm...',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+            ),
           ),
         ],
       ),

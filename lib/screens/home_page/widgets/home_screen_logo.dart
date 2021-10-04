@@ -4,6 +4,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../../utils/urls.dart';
+
 class HomeScreenLogo extends StatelessWidget {
   const HomeScreenLogo({Key? key}) : super(key: key);
 
@@ -16,8 +18,7 @@ class HomeScreenLogo extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.fitHeight,
-              image: NetworkImage(
-                  'https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,h_900,q_auto:good,w_1200/v1/gcs/platform-data-dsc/contentbuilder/GDG-Bevy-SocialShare-v2_vPiQuXZ.png'),
+              image: NetworkImage(HOMEPAGE_BACKGROUND_IMAGE_URL),
             ),
           ),
         ),
