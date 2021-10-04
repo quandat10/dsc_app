@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
-import '../screens/home_screen.dart';
+import 'home_page/home_screen.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class IntroScreen extends StatelessWidget {
   }
 
   void _goToHomeScreen(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(HomeScreen.ROUTE_NAME);
+    Navigator.of(context).pushReplacementNamed(HomeScreen.tag);
   }
 
   @override

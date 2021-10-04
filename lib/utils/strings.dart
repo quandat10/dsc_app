@@ -1,0 +1,1 @@
+const String TITLE_EVENT = 'Sự kiện';
