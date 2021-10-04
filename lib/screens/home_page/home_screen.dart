@@ -1,15 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dsc_app/models/post.dart';
+import 'package:dsc_app/screens/news_page/news_screen.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/drawer.dart';
 import 'widgets/home_screen_logo.dart';
 import '../../widgets/news_slider.dart';
-import 'widgets/catogory_list_view.dart';
+import 'widgets/category_list_view.dart';
+import 'widgets/posts_item.dart';
 
 class HomeScreen extends StatefulWidget {
   static const tag = '/home';
@@ -28,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final news = Provider.of<News>(context).news;
     return Scaffold(
       key: scaffoldKey,
       drawer: CustomedDrawer(),
@@ -72,65 +77,18 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 20),
-              child: CatogoryListView(),
+              child: CategoryListView(),
             ),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-              return Container(
-                child: InkWell(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (ctx) => AlertDialog(
-                        title: const Text('Show Post'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(ctx).pop(),
-                            child: const Text('OK'),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    child: ListTile(
-                      title: Text(
-                        'Design System Resources',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                      subtitle: Text(
-                          'And what you can expect to learn from each all the top resources...'),
-                      trailing: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          height: 50,
-                          width: 50,
-                          imageUrl: THUMBNAIL_IMAGE_HOMEPAGE_URL,
-                          placeholder: (context, url) => Center(
-                            child: SizedBox(
-                              width: 30.0,
-                              height: 30.0,
-                              child: new CircularProgressIndicator(
-                                color: Colors.amber,
-                              ),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }, childCount: 9),
+              return PostsItem(news[index]);
+            }, childCount: news.length <= 9 ? news.length : 9),
           ),
           SliverToBoxAdapter(
             child: InkWell(
-              onTap: () {},
+              onTap: () =>
+                  Navigator.of(context).pushReplacementNamed(NewsScreen.tag),
               child: Container(
                 alignment: Alignment.center,
                 height: 50,

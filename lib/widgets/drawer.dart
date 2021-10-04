@@ -1,9 +1,14 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/screens/event_page/event_screen.dart';
+import 'package:dsc_app/screens/news_page/news_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home_page/home_screen.dart';
+
+import '../utils/strings.dart';
+import '../utils/colors.dart';
 
 class CustomedDrawer extends StatelessWidget {
   const CustomedDrawer({Key? key}) : super(key: key);
@@ -30,27 +35,31 @@ class CustomedDrawer extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 200,
-              child: Image(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      'https://scontent.fhan3-4.fna.fbcdn.net/v/t1.6435-9/213722001_490471052304887_7731603353795101882_n.png?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=3ZEegaA0mTcAX-2k48Z&_nc_ht=scontent.fhan3-4.fna&oh=8d4c918f56e3c58fa8a7c509a5454ef4&oe=617D56EB')),
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl:
+                    'https://scontent.fhan3-4.fna.fbcdn.net/v/t1.6435-9/213722001_490471052304887_7731603353795101882_n.png?_nc_cat=104&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=3ZEegaA0mTcAX-2k48Z&_nc_ht=scontent.fhan3-4.fna&oh=8d4c918f56e3c58fa8a7c509a5454ef4&oe=617D56EB',
+                placeholder: (ctx, url) => CircularProgressIndicator(),
+                errorWidget: (ctx, url, error) => const Icon(Icons.error),
+              ),
             ),
-            ..._drawerItem('Home', Icons.home, HomeScreen.tag, context),
+            ..._drawerItem(TITLE_HOME, Icons.home, HomeScreen.tag, context),
             ..._drawerItem(
-                'News', Icons.library_books, HomeScreen.tag, context),
-            ..._drawerItem('Events', Icons.event, EventScreen.tag, context),
-            ..._drawerItem('Members', Icons.people, HomeScreen.tag, context),
+                TITLE_NEWS, Icons.library_books, NewsScreen.tag, context),
+            ..._drawerItem(TITLE_EVENTS, Icons.event, EventScreen.tag, context),
             ..._drawerItem(
-                'Recruitment', Icons.perm_identity, HomeScreen.tag, context),
+                TITLE_MEMBERS, Icons.people, HomeScreen.tag, context),
+            ..._drawerItem(TITLE_RECRUITMENT, Icons.perm_identity,
+                HomeScreen.tag, context),
             ..._drawerItem(
-                'Products', Icons.business_center, HomeScreen.tag, context),
+                TITLE_PRODUCTS, Icons.business_center, HomeScreen.tag, context),
             ..._drawerItem(
-                'Contact', Icons.local_phone, HomeScreen.tag, context),
+                TITLE_CONTACT, Icons.local_phone, HomeScreen.tag, context),
             ..._drawerItem(
                 'About Us', Icons.announcement, HomeScreen.tag, context),
             ListTile(
               leading: Icon(Icons.exit_to_app),
-              title: Text('Quit'),
+              title: Text(TITLE_QUIT),
               onTap: () {
                 exit(0);
               },
