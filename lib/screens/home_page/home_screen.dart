@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/models/post.dart';
 import 'package:dsc_app/screens/news_page/news_screen.dart';
 import 'package:dsc_app/utils/urls.dart';
+import 'package:dsc_app/widgets/club_information.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -100,6 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              ClubInformation(),
+            ]),
+          )
         ],
       ),
     );

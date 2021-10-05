@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dsc_app/screens/contact_screen/contact_screen.dart';
 import 'package:dsc_app/screens/event_page/event_screen.dart';
+import 'package:dsc_app/screens/member_screen/member_screen.dart';
 import 'package:dsc_app/screens/news_page/news_screen.dart';
+import 'package:dsc_app/screens/products_screen/products_screen.dart';
+import 'package:dsc_app/screens/recruitment_screen/recruitment_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home_page/home_screen.dart';
@@ -48,13 +52,13 @@ class CustomedDrawer extends StatelessWidget {
                 TITLE_NEWS, Icons.library_books, NewsScreen.tag, context),
             ..._drawerItem(TITLE_EVENTS, Icons.event, EventScreen.tag, context),
             ..._drawerItem(
-                TITLE_MEMBERS, Icons.people, HomeScreen.tag, context),
+                TITLE_MEMBERS, Icons.people, MemberScreen.tag, context),
             ..._drawerItem(TITLE_RECRUITMENT, Icons.perm_identity,
-                HomeScreen.tag, context),
+                RecruitmentScreen.tag, context),
             ..._drawerItem(
-                TITLE_PRODUCTS, Icons.business_center, HomeScreen.tag, context),
+                TITLE_PRODUCTS, Icons.business_center, ProductsScreen.tag, context),
             ..._drawerItem(
-                TITLE_CONTACT, Icons.local_phone, HomeScreen.tag, context),
+                TITLE_CONTACT, Icons.local_phone, ContactScreen.tag, context),
             ..._drawerItem(
                 'About Us', Icons.announcement, HomeScreen.tag, context),
             ListTile(
