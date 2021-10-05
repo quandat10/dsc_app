@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/screens/event_page/event_detail_screen.dart';
-import 'package:dsc_app/screens/home_page/widgets/category_list_view.dart';
+import 'package:dsc_app/widgets/category_list_view.dart';
 import 'package:dsc_app/screens/news_page/news_detail_screen.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/strings.dart';

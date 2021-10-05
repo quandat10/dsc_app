@@ -15,7 +15,7 @@ class PostsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: EdgeInsets.only(bottom: 10),
       child: Card(
         elevation: 0,
         child: ListTile(

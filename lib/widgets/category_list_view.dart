@@ -1,4 +1,4 @@
-import 'package:dsc_app/screens/home_page/widgets/choice_chip.dart';
+import 'package:dsc_app/widgets/choice_chip.dart';
 import 'package:flutter/material.dart';
 
 class CategoryListView extends StatefulWidget {

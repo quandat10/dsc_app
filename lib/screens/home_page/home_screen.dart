@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import '../../widgets/drawer.dart';
 import 'widgets/home_screen_logo.dart';
 import '../../widgets/news_slider.dart';
-import 'widgets/category_list_view.dart';
+import '../../widgets/category_list_view.dart';
 import 'widgets/posts_item.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -79,9 +79,21 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SliverToBoxAdapter(
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 20),
-              child: CategoryListView(),
-            ),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 21),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Latest Blogs',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                    Divider(
+                      thickness: 2,
+                    ),
+                  ],
+                )),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
