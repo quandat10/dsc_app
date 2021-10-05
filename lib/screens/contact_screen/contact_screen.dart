@@ -29,7 +29,17 @@ class _ContactScreenState extends State<ContactScreen> {
       body: SingleChildScrollView(
         child: Column(children: [
           Container(
-            margin: const EdgeInsets.all(20),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [BoxShadow(
+                color: Colors.black38,
+                offset: const Offset(0,2),
+                blurRadius: 2
+              )]
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
