@@ -1,3 +1,4 @@
+import 'package:dsc_app/screens/tabs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -47,7 +48,7 @@ class IntroScreen extends StatelessWidget {
   }
 
   void _goToHomeScreen(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(HomeScreen.tag);
+    Navigator.of(context).pushReplacementNamed(TabsScreen.tag);
   }
 
   @override

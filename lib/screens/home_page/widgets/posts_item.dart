@@ -1,60 +1,116 @@
-import 'package:dsc_app/models/post.dart';
-import 'package:dsc_app/screens/event_page/event_detail_screen.dart';
-import 'package:dsc_app/screens/news_page/news_detail_screen.dart';
+import 'package:dsc_app/icons/my_flutter_app_icons.dart';
 import 'package:dsc_app/utils/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/painting.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../utils/urls.dart';
 
 class PostsItem extends StatelessWidget {
-  final Post newsPost;
-
-  PostsItem(this.newsPost);
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      child: Card(
-        elevation: 0,
-        child: ListTile(
-          title: Text(
-            newsPost.title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            softWrap: true,
-          ),
-          subtitle: Text(newsPost.description.substring(0, 100) + '...'),
-          trailing: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      width: double.infinity,
+      height: 130,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+              color: Color(0xff005c7e).withOpacity(0.05),
+              offset: Offset(0, 10),
+              blurRadius: 5)
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
             child: CachedNetworkImage(
-              height: 50,
-              width: 50,
+              height: 92,
+              width: 92,
+              imageUrl: TEST_IMAGE,
               fit: BoxFit.cover,
-              imageUrl: newsPost.images[0],
-              placeholder: (context, url) => Center(
-                child: SizedBox(
-                  width: 30.0,
-                  height: 30.0,
-                  child: new CircularProgressIndicator(
-                    color: Colors.amber,
-                  ),
-                ),
-              ),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+              placeholder: (_, url) => CircularProgressIndicator(),
             ),
           ),
-          onTap: () {
-            if (newsPost.isEvent)
-              Navigator.of(context)
-                  .pushNamed(EventDetailScreen.tag, arguments: newsPost);
-            else if (newsPost.isRecruitment) {
-            } else {
-              Navigator.of(context)
-                  .pushNamed(NewsDetailScreen.tag, arguments: newsPost);
-            }
-          },
-        ),
+          Container(
+            margin: const EdgeInsets.only(left: 15),
+            width: MediaQuery.of(context).size.width * 0.45,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: CachedNetworkImage(
+                        height: 16,
+                        width: 16,
+                        imageUrl: HUMAN_PICTURE,
+                        fit: BoxFit.cover,
+                        placeholder: (_, url) => CircularProgressIndicator(),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: const Text(
+                        'Tran Tien Anh',
+                        style: TextStyle(
+                          color: MAIN_COLOR,
+                          fontSize: 14,
+                          letterSpacing: -1,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const Text(
+                  'React Hooks là gì? Công dụng của nó?',
+                  softWrap: true,
+                  style: TextStyle(
+                    overflow: TextOverflow.fade,
+                    color: SECONDARY_COLOR,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.clock,
+                      size: 14,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: const Text('1hr ago'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.02,
+            child: Column(
+              children: [
+                IconButton(
+                  icon: Icon(
+                    MyFlutterApp.mark,
+                    size: 14,
+                  ),
+                  onPressed: () {},
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

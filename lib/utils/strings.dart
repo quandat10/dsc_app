@@ -6,3 +6,6 @@ const String TITLE_RECRUITMENT = 'Tuyển dụng';
 const String TITLE_PRODUCTS = 'Sản phẩm';
 const String TITLE_CONTACT = 'Liên hệ';
 const String TITLE_QUIT = 'Thoát';
+
+const String CLUB_NAME = 'Google Developer Student Clubs';
+const String SCHOOL_NAME = 'Hanoi University of Science and Technology';
