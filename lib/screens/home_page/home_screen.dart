@@ -66,31 +66,36 @@ class _HomeScreenState extends State<HomeScreen> {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: SingleChildScrollView(
-        physics:new BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _textHeaderItem('Sự kiện mới nhất', () {})),
-            SizedBox(height: 15),
-            NewsSlider([
-              TEST_EVENT_IMAGE,
-              TEST_EVENT_IMAGE,
-              TEST_EVENT_IMAGE,
-              TEST_EVENT_IMAGE,
-              TEST_EVENT_IMAGE
-            ]),
-            SizedBox(height: 15),
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: _textHeaderItem('Bài viết mới nhất', () {})),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => PostsItem(),
-            ),
-          ],
+        child: Container(
+          height: mediaQuery.size.height -
+              mediaQuery.padding.top -
+              mediaQuery.padding.bottom,
+          width: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _textHeaderItem('Sự kiện mới nhất', () {})),
+              SizedBox(height: 15),
+              NewsSlider([
+                TEST_EVENT_IMAGE,
+                TEST_EVENT_IMAGE,
+                TEST_EVENT_IMAGE,
+                TEST_EVENT_IMAGE,
+                TEST_EVENT_IMAGE
+              ]),
+              SizedBox(height: 15),
+              Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _textHeaderItem('Bài viết mới nhất', () {})),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (_, index) => PostsItem(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
