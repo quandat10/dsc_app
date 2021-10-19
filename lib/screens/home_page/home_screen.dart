@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/screens/home_page/widgets/posts_item.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/urls.dart';
@@ -14,7 +15,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class HomeScreen extends StatefulWidget {
   static const tag = '/home';
 
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -65,37 +66,33 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
-        child: Container(
-          height: mediaQuery.size.height -
-              mediaQuery.padding.top -
-              mediaQuery.padding.bottom,
-          width: double.infinity,
-          child: Column(
-            children: [
-              Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _textHeaderItem('Sự kiện mới nhất', () {})),
-              SizedBox(height: 15),
-              NewsSlider([
-                TEST_EVENT_IMAGE,
-                TEST_EVENT_IMAGE,
-                TEST_EVENT_IMAGE,
-                TEST_EVENT_IMAGE,
-                TEST_EVENT_IMAGE
-              ]),
-              SizedBox(height: 15),
-              Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _textHeaderItem('Bài viết mới nhất', () {})),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: (_, index) => PostsItem(),
-                ),
-              ),
-            ],
-          ),
+        physics: new BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _textHeaderItem('Sự kiện mới nhất', () {})),
+            SizedBox(height: 15),
+            NewsSlider([
+              TEST_EVENT_SCREEN_IMAGE,
+              TEST_EVENT_SCREEN_IMAGE,
+              TEST_EVENT_SCREEN_IMAGE,
+              TEST_EVENT_SCREEN_IMAGE,
+              TEST_EVENT_SCREEN_IMAGE
+            ]),
+            SizedBox(height: 15),
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: _textHeaderItem('Bài viết mới nhất', () {})),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              itemBuilder: (_, index) => PostsItem(),
+            ),
+          ],
         ),
       ),
     );

@@ -9,14 +9,7 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BACK_GROUND_COLOR,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black87),
-        backgroundColor: BACK_GROUND_COLOR,
-        centerTitle: true,
-        title: Text(TITLE_PRODUCTS,
-            style: TextStyle(color: Colors.black87, fontSize: 18)),
-      ),
+      backgroundColor: Colors.transparent,
       body: Center(
         child: const Text('Không có sản phẩm hiển thị'),
       ),

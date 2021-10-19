@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dsc_app/screens/event_screen/event_detail_screen.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -24,7 +25,9 @@ class _NewsSliderState extends State<NewsSlider> {
           items: widget.images
               .map((e) => Builder(builder: (context) {
                     return InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (_) => EventDetailScreen()));
+                      },
                       child: Stack(
                         alignment: Alignment.bottomCenter,
                         children: [
@@ -34,6 +37,8 @@ class _NewsSliderState extends State<NewsSlider> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(28),
                               child: CachedNetworkImage(
+                                width: 300,
+                                height: 200,
                                 imageUrl: e,
                                 fit: BoxFit.cover,
                                 placeholder: (_, url) =>
@@ -54,6 +59,7 @@ class _NewsSliderState extends State<NewsSlider> {
                             margin: const EdgeInsets.symmetric(vertical: 5),
                             alignment: Alignment.bottomCenter,
                             height: 150,
+                            width: 300,
                             padding: const EdgeInsets.all(13),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(

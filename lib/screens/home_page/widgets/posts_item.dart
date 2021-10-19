@@ -15,7 +15,6 @@ class PostsItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       width: double.infinity,
-      height: 130,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
@@ -71,9 +70,12 @@ class PostsItem extends StatelessWidget {
                     )
                   ],
                 ),
+                const SizedBox(height: 5,),
                 const Text(
                   'React Hooks là gì? Công dụng của nó?',
                   softWrap: true,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     overflow: TextOverflow.fade,
                     color: SECONDARY_COLOR,
@@ -81,6 +83,7 @@ class PostsItem extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
+                const SizedBox(height: 5,),
                 Row(
                   children: [
                     Icon(
@@ -98,16 +101,12 @@ class PostsItem extends StatelessWidget {
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.02,
-            child: Column(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    MyFlutterApp.mark,
-                    size: 14,
-                  ),
-                  onPressed: () {},
-                )
-              ],
+            child: IconButton(
+              icon: Icon(
+                MyFlutterApp.mark,
+                size: 14,
+              ),
+              onPressed: () {},
             ),
           ),
         ],
