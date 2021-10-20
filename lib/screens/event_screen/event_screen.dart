@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:dsc_app/apis/events_api.dart';
 import 'package:dsc_app/models/event.dart';
+import 'package:dsc_app/models/event/event_model.dart';
 import 'package:dsc_app/screens/event_screen/widgets/event_item.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +27,11 @@ class _EventScreenState extends State<EventScreen> {
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: FutureBuilder(
-          future: getEventList(),
+      body: FutureBuilder<List<EventModel>>(
+          future: EventsApi().getEvents(),
           builder: (_, snapshot) {
             if (snapshot.hasData) {
-              List<Event> _events = snapshot.data as List<Event>;
+              List<EventModel> _events = snapshot.data!;
               return SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -51,13 +53,15 @@ class _EventScreenState extends State<EventScreen> {
                     ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: 10,
-                        itemBuilder: (_, index) => EventItem())
+                        itemCount: _events.length,
+                        itemBuilder: (_, index) => EventItem(
+                          title:_events[index].title
+                        ))
                   ],
                 ),
               );
             } else {
-              return CircularProgressIndicator();
+              return Center(child: new CircularProgressIndicator());
             }
           }),
     );

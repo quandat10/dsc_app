@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EventItem extends StatelessWidget {
-  const EventItem({Key? key}) : super(key: key);
+  final String title;
+  const EventItem({required this.title}) : super();
 
   Widget _subText(IconData icon, String title) {
     return Row(
@@ -36,8 +37,9 @@ class EventItem extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return InkWell(
       onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => EventDetailScreen(),));
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => EventDetailScreen(),
+        ));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
@@ -115,13 +117,14 @@ class EventItem extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Workshop Học máy và Trí tuệ nhân tạo',
+                    title,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: TextStyle(

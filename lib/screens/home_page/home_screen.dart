@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dsc_app/screens/event_screen/event_screen.dart';
 import 'package:dsc_app/screens/home_page/widgets/posts_item.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/urls.dart';
@@ -39,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           InkWell(
-            onTap: function,
+            onTap: (){
+              
+            },
             child: Row(
               children: [
                 Padding(
