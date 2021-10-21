@@ -11,7 +11,6 @@ class EventsApi {
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
-      // print(await response.stream.bytesToString());
       var data = json.decode(await response.stream.bytesToString());
       if (data['status'] == "200") {
         return data["result"]

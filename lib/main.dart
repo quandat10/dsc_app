@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
           textTheme: TextTheme(
             headline6: GoogleFonts.inter(),
           ),
+          primarySwatch: Colors.red,
           fontFamily: GoogleFonts.inter().fontFamily,
           canvasColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),

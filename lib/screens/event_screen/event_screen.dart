@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dsc_app/apis/events_api.dart';
-import 'package:dsc_app/models/event.dart';
 import 'package:dsc_app/models/event/event_model.dart';
 import 'package:dsc_app/screens/event_screen/widgets/event_item.dart';
 import 'package:dsc_app/utils/colors.dart';
@@ -14,13 +13,6 @@ class EventScreen extends StatefulWidget {
 }
 
 class _EventScreenState extends State<EventScreen> {
-  Future<List<Event>> getEventList() async {
-    final response = await DefaultAssetBundle.of(context)
-        .loadString('assets/jsons/EVENT_MOCK_DATA.json');
-    final data = json.decode(response) as List<dynamic>;
-    List<Event> _list = data.map((e) => Event.fromJson(e)).toList();
-    return _list;
-  }
 
   @override
   Widget build(BuildContext context) {

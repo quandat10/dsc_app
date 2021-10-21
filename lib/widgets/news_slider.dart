@@ -33,12 +33,12 @@ class _NewsSliderState extends State<NewsSlider> {
                         children: [
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 5),
-                            width: 300,
+                            width: 400,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(28),
                               child: CachedNetworkImage(
-                                width: 300,
-                                height: 200,
+                                width: 400,
+                                height: 250,
                                 imageUrl: e,
                                 fit: BoxFit.cover,
                                 placeholder: (_, url) =>
@@ -59,7 +59,7 @@ class _NewsSliderState extends State<NewsSlider> {
                             margin: const EdgeInsets.symmetric(vertical: 5),
                             alignment: Alignment.bottomCenter,
                             height: 150,
-                            width: 300,
+                            width: 400,
                             padding: const EdgeInsets.all(13),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -77,6 +77,8 @@ class _NewsSliderState extends State<NewsSlider> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
                           )
                         ],
@@ -85,7 +87,7 @@ class _NewsSliderState extends State<NewsSlider> {
                   }))
               .toList(),
           options: CarouselOptions(
-            height: 200,
+            height: 250,
             initialPage: 0,
             enlargeCenterPage: true,
             enableInfiniteScroll: true,
