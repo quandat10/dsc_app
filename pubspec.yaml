@@ -20,7 +20,10 @@ dependencies:
   font_awesome_flutter: ^9.1.0
   smooth_page_indicator: ^1.0.0+2
   intl:
-  chips_choice_null_safety: ^2.0.2
+  chips_choice_null_safety: ^2.0.4
+  animated_splash_screen: ^1.1.0
+  page_transition: ^2.0.1-nullsafety.0
+  flutter_staggered_animations: ^1.0.0
 
 dev_dependencies:
   flutter_test:

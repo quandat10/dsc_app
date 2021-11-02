@@ -79,19 +79,14 @@ class EventDetailScreen extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage('assets/images/background_image.png'),
-        ),
-      ),
+      color: Colors.white,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: CustomScrollView(
-          physics:
-              BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
           slivers: [
             SliverAppBar(
+              automaticallyImplyLeading: true,
+              pinned: false,
               iconTheme: IconThemeData(color: Colors.white),
               title: Text(
                 'SỰ KIỆN',
@@ -112,17 +107,14 @@ class EventDetailScreen extends StatelessWidget {
               ],
               expandedHeight: 210,
               flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.pin,
                 background: EventBackgroundItem(),
               ),
             ),
             SliverToBoxAdapter(
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                    ),
                     color: Colors.white),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

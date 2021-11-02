@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/screens/event_screen/event_screen.dart';
-import 'package:dsc_app/screens/home_page/widgets/posts_item.dart';
+import 'package:dsc_app/screens/blog_screen/widgets/posts_item.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:dsc_app/widgets/news_slider.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -40,9 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           InkWell(
-            onTap: (){
-              
-            },
+            onTap: () {},
             child: Row(
               children: [
                 Padding(
@@ -89,11 +88,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: _textHeaderItem('Bài viết mới nhất', () {})),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              itemBuilder: (_, index) => PostsItem(),
+            AnimationLimiter(
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (_, index) => AnimationConfiguration.staggeredList(
+                    duration: const Duration(milliseconds: 500),
+                    position: index,
+                    child: ScaleAnimation(child: FadeInAnimation(child: PostsItem()))),
+              ),
             ),
           ],
         ),

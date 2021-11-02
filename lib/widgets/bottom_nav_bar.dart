@@ -88,6 +88,7 @@ class _BottomNavBarState extends State<BottomNavBar>
           title,
           style: GoogleFonts.inter(color: Colors.white),
         ),
+        SizedBox(height: 10,),
       ],
     );
   }
