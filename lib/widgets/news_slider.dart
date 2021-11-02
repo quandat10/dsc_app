@@ -39,7 +39,8 @@ class _NewsSliderState extends State<NewsSlider> {
                                 alignment: Alignment.bottomCenter,
                                 children: [
                                   Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 5),
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
                                     width: 400,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(28),
@@ -50,6 +51,8 @@ class _NewsSliderState extends State<NewsSlider> {
                                         fit: BoxFit.cover,
                                         placeholder: (_, url) => const Center(
                                             child: CircularProgressIndicator()),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
                                       ),
                                     ),
                                     decoration: BoxDecoration(
@@ -63,7 +66,8 @@ class _NewsSliderState extends State<NewsSlider> {
                                         ]),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 5),
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
                                     alignment: Alignment.bottomCenter,
                                     height: 150,
                                     width: 400,

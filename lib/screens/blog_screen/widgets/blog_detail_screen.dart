@@ -65,6 +65,9 @@ class BlogDetailScreen extends StatelessWidget {
                       imageUrl: TEST_EVENT_IMAGE,
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.3,
+                      placeholder: (_, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error), 
                     ),
                     Positioned(
                         bottom: 0,
@@ -116,6 +119,7 @@ class BlogDetailScreen extends StatelessWidget {
                             fit: BoxFit.cover,
                             placeholder: (_, url) =>
                                 CircularProgressIndicator(),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
                           ),
                         ),
                         Padding(

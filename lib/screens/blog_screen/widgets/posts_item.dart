@@ -46,6 +46,7 @@ class PostsItem extends StatelessWidget {
                     fit: BoxFit.cover,
                     placeholder: (_, url) =>
                         const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Icon(Icons.error),    
                   ),
                 ),
                 Expanded(
@@ -65,6 +66,7 @@ class PostsItem extends StatelessWidget {
                                 fit: BoxFit.cover,
                                 placeholder: (_, url) => const Center(
                                     child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
                               ),
                             ),
                             Padding(

@@ -56,6 +56,7 @@ class _BlogSliderState extends State<BlogSlider> {
                                         fit: BoxFit.cover,
                                         placeholder: (_, url) => const Center(
                                             child: CircularProgressIndicator()),
+                                            errorWidget: (context, url, error) => Icon(Icons.error),
                                       ),
                                     ),
                                     decoration: BoxDecoration(
@@ -117,6 +118,7 @@ class _BlogSliderState extends State<BlogSlider> {
                                                 fit: BoxFit.cover,
                                                 placeholder: (_, url) =>
                                                     CircularProgressIndicator(),
+                                                    errorWidget: (context, url, error) => Icon(Icons.error),
                                               ),
                                             ),
                                             Padding(

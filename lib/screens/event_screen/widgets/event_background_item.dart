@@ -21,6 +21,9 @@ class EventBackgroundItem extends StatelessWidget {
               child: CachedNetworkImage(
                 fit: BoxFit.fitHeight,
                 imageUrl: TEST_EVENT_SCREEN_IMAGE,
+                placeholder: (_, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           ),

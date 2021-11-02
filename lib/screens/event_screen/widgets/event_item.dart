@@ -65,12 +65,15 @@ class EventItem extends StatelessWidget {
                       child: CachedNetworkImage(
                         fit: BoxFit.fitHeight,
                         imageUrl: TEST_EVENT_SCREEN_IMAGE,
+                        placeholder: (_, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,

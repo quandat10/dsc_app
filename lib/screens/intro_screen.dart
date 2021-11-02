@@ -1,5 +1,7 @@
 import 'package:dsc_app/screens/tabs_screen.dart';
 import 'package:dsc_app/utils/colors.dart';
+import 'package:dsc_app/utils/images.dart';
+import 'package:dsc_app/utils/strings.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -17,145 +19,60 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   List<PageViewModel> get _introPages {
     return [
-      PageViewModel(
-        decoration: PageDecoration(
-          imagePadding: EdgeInsets.only(top: 20),
-          descriptionPadding: const EdgeInsets.all(0),
-          contentMargin: const EdgeInsets.all(0),
-          imageFlex: 2,
-          bodyFlex: 1,
-          bodyAlignment: Alignment.bottomCenter,
-        ),
-        titleWidget: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(30)),
-          child: Column(
-            children: [
-              Text(
-                'Khám phá những sự kiện công nghệ mới nhất',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -1),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Sử dụng app GDSC-HUST để có thể cập nhật những sự kiện công nghệ hấp dẫn nhất!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
-              )
-            ],
-          ),
-        ),
-        body: '',
-        image: Image(
-          image: AssetImage('assets/images/event_screen.png'),
-        ),
-      ),
-      PageViewModel(
-        decoration: PageDecoration(
-          imagePadding: EdgeInsets.only(top: 20),
-          descriptionPadding: const EdgeInsets.all(0),
-          contentMargin: const EdgeInsets.all(0),
-          imageFlex: 2,
-          bodyFlex: 1,
-          bodyAlignment: Alignment.bottomCenter,
-        ),
-        titleWidget: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(30)),
-          child: Column(
-            children: [
-              Text(
-                'Học hỏi thêm từ những bài viết bổ ích',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -1),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Với app GDSC-HUST bạn sẽ dễ dàng lưu lại những bài viết chia sẻ kiến thức ngắn gọn, siêu thú vị và cực kỳ hữu ích!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
-              )
-            ],
-          ),
-        ),
-        body: '',
-        image: Image(
-          image: AssetImage('assets/images/blog_screen.png'),
-        ),
-      ),
-      PageViewModel(
-        decoration: PageDecoration(
-          imagePadding: EdgeInsets.only(top: 20),
-          descriptionPadding: const EdgeInsets.all(0),
-          contentMargin: const EdgeInsets.all(0),
-          imageFlex: 2,
-          bodyFlex: 1,
-          bodyAlignment: Alignment.bottomCenter,
-        ),
-        titleWidget: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
-          height: MediaQuery.of(context).size.height * 0.4,
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(30)),
-          child: Column(
-            children: [
-              Text(
-                'Gặp gỡ những thành viên năng động, tài năng đến từ GDSC-HUST',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -1),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Bạn sẽ được kết nối và gặp gỡ những thành viên đáng yêu, dễ thương và giỏi cực kỳ đó!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                ),
-              )
-            ],
-          ),
-        ),
-        body: '',
-        image: Image(
-          image: AssetImage('assets/images/member_screen.png'),
-        ),
-      ),
+      pageView(TITLE_INTRO_1,TITLE_CONTENT_1,IMG_EVENT_SCREEN),
+      pageView(TITLE_INTRO_2,TITLE_CONTENT_2,IMG_MEMBER_SCREEN),
+      pageView(TITLE_INTRO_3,TITLE_CONTENT_3,IMG_BLOG_SCREEN),
     ];
+  }
+
+  PageViewModel pageView(String title, String content, String img){
+    return PageViewModel(
+        decoration: PageDecoration(
+          imagePadding: EdgeInsets.only(top: 20),
+          descriptionPadding: const EdgeInsets.all(0),
+          contentMargin: const EdgeInsets.all(0),
+          imageFlex: 2,
+          bodyFlex: 1,
+          bodyAlignment: Alignment.bottomCenter,
+          
+        ),
+        titleWidget: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
+          height: MediaQuery.of(context).size.height * 0.4,
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: PRIMARY_COLOR, borderRadius: BorderRadius.circular(30)),
+          child: Column(
+            children: [
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -1),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                content,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                ),
+              )
+            ],
+          ),
+        ),
+        body: '',
+        image: Image(
+          image: AssetImage(img),
+        ),
+      );
   }
 
   void _goToHomeScreen(BuildContext context) {
