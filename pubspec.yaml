@@ -16,7 +16,6 @@ dependencies:
   cached_network_image: ^3.0.0
   cupertino_icons: ^1.0.2
   provider: ^6.0.1
-  google_fonts:
   font_awesome_flutter: ^9.1.0
   smooth_page_indicator: ^1.0.0+2
   intl:
@@ -24,6 +23,16 @@ dependencies:
   animated_splash_screen: ^1.1.0
   page_transition: ^2.0.1-nullsafety.0
   flutter_staggered_animations: ^1.0.0
+  timeago: ^3.1.0
+  flutter_html: ^2.1.5
+  webview_flutter: ^2.3.0
+  infinite_scroll_pagination:
+  flutter_svg: ^0.23.0+1
+  url_launcher:
+  fluttertoast:
+  device_info_plus:
+  iconsax:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
@@ -36,9 +45,30 @@ flutter:
   assets:
     - assets/images/
     - assets/jsons/
+    - assets/icons/
 
   fonts:
     - family: MyFlutterApp
       fonts:
         - asset: assets/fonts/MyFlutterApp.ttf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Inter-Black.ttf
+          weight: 900
 

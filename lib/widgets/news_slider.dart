@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dsc_app/models/event/event_model.dart';
 import 'package:dsc_app/screens/event_screen/event_detail_screen.dart';
+import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -7,16 +9,16 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class NewsSlider extends StatefulWidget {
-  final List<String> images;
+  final List<EventModel> events;
 
-  NewsSlider(this.images);
+  NewsSlider(this.events);
 
   @override
   State<NewsSlider> createState() => _NewsSliderState();
 }
 
 class _NewsSliderState extends State<NewsSlider> {
-  //int activeIndex = 0;
+  int activeIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class _NewsSliderState extends State<NewsSlider> {
       children: [
         AnimationLimiter(
           child: CarouselSlider(
-            items: widget.images
+            items: widget.events
                 .map((e) => AnimationConfiguration.synchronized(
                       duration: const Duration(milliseconds: 500),
                       child: ScaleAnimation(
@@ -32,8 +34,9 @@ class _NewsSliderState extends State<NewsSlider> {
                           child: Builder(builder: (context) {
                             return InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) => EventDetailScreen()));
+                                Navigator.of(context).pushNamed(
+                                    EventDetailScreen.tag,
+                                    arguments: e);
                               },
                               child: Stack(
                                 alignment: Alignment.bottomCenter,
@@ -47,7 +50,7 @@ class _NewsSliderState extends State<NewsSlider> {
                                       child: CachedNetworkImage(
                                         width: 400,
                                         height: 250,
-                                        imageUrl: e,
+                                        imageUrl: e.imageUrl,
                                         fit: BoxFit.cover,
                                         placeholder: (_, url) => const Center(
                                             child: CircularProgressIndicator()),
@@ -85,8 +88,8 @@ class _NewsSliderState extends State<NewsSlider> {
                                           bottomLeft: Radius.circular(28),
                                           bottomRight: Radius.circular(28)),
                                     ),
-                                    child: const Text(
-                                      'WORKSHOP: HỌC MÁY VÀ TRÍ TUỆ NHÂN TẠO',
+                                    child: Text(
+                                      e.title,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600,
@@ -109,26 +112,33 @@ class _NewsSliderState extends State<NewsSlider> {
               enlargeCenterPage: true,
               enableInfiniteScroll: true,
               scrollDirection: Axis.horizontal,
-              // onPageChanged: (index, reason) {
-              //   setState(() {
-              //     activeIndex = index;
-              //   });
-              // },
+              onPageChanged: (index, reason) {
+                setState(() {
+                  activeIndex = index;
+                });
+              },
               autoPlay: true,
               autoPlayInterval: Duration(seconds: 3),
             ),
           ),
         ),
-        // SizedBox(
-        //   height: 10,
-        // ),
-        //_buildIndicator(),
+        SizedBox(
+          height: 10,
+        ),
+        _buildIndicator(),
       ],
     );
   }
 
-// Widget _buildIndicator() => AnimatedSmoothIndicator(
-//       activeIndex: activeIndex,
-//       count: widget.images.length
-//     );
+  Widget _buildIndicator() => AnimatedSmoothIndicator(
+        activeIndex: activeIndex,
+        count: widget.events.length,
+        effect: SlideEffect(
+            spacing: 8.0,
+            radius: 4.0,
+            dotWidth: 10,
+            dotHeight: 10,
+            dotColor: Colors.grey,
+            activeDotColor: ERROR_COLOR),
+      );
 }

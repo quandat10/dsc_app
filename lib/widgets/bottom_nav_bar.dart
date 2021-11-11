@@ -1,39 +1,36 @@
 import 'package:dsc_app/icons/my_flutter_app_icons.dart';
+import 'package:dsc_app/providers/tabs_navigation_provider.dart';
 import 'package:dsc_app/utils/colors.dart';
+import 'package:dsc_app/utils/strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '';
-
-enum OnClickStatus { Click, UnClick }
+import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
-  Function setPageIndex;
-  int selectedScreenIndex;
-
-  BottomNavBar(this.setPageIndex, this.selectedScreenIndex, {Key? key})
-      : super(key: key);
+  BottomNavBar({Key? key}) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar>
-    with SingleTickerProviderStateMixin {
+class _BottomNavBarState extends State<BottomNavBar> {
   var _isShrink = true;
 
   Widget _textIconButtonBuilder(
-      IconData icon, String title, void Function() function,
-      {required int index}) {
-    var iconColor = Colors.white;
+      String iconPath, String title, void Function() function,
+      {required int index,
+      required int selectedScreenIndex,
+      required Function setPageIndex}) {
     var textColor =
-        widget.selectedScreenIndex == index ? Colors.white : Colors.transparent;
+        selectedScreenIndex == index ? Colors.white : Colors.transparent;
     return InkWell(
       onTap: () {
         setState(() {
           //widget.selectedScreenIndex = index;
           if (index != 8) {
-            widget.setPageIndex(index);
+            setPageIndex(index);
             _isShrink = true;
           }
         });
@@ -42,19 +39,24 @@ class _BottomNavBarState extends State<BottomNavBar>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            color: index == 8 ? Colors.white : iconColor,
-          ),
-          if (widget.selectedScreenIndex == index)
+          if (iconPath != 'assets/icons/close.svg')
+            SvgPicture.asset(
+              iconPath,
+              color: Colors.white,
+            ),
+          if (iconPath == 'assets/icons/close.svg')
+            Icon(Iconsax.close_circle, size: 30, color: Colors.white),
+          if (selectedScreenIndex == index)
             SizedBox(
               height: 4,
             ),
-          if (widget.selectedScreenIndex == index)
+          if (selectedScreenIndex == index)
             FittedBox(
               child: Text(
                 title,
-                style: GoogleFonts.inter(
+                style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w500,
                     color: index == 8 ? Colors.transparent : textColor),
               ),
             ),
@@ -63,9 +65,10 @@ class _BottomNavBarState extends State<BottomNavBar>
     );
   }
 
-  Widget _extendedTextIconButtonBuilder(
-      IconData icon, String title, void Function() function,
-      {required int index}) {
+  Widget _extendedTextIconButtonBuilder(String iconPath, String title,
+      {required int index,
+      required int selectedScreenIndex,
+      required Function setPageIndex}) {
     return Column(
       children: [
         IconButton(
@@ -73,22 +76,23 @@ class _BottomNavBarState extends State<BottomNavBar>
             setState(() {
               //widget.selectedScreenIndex = index;
               if (index != 8) {
-                widget.setPageIndex(index);
+                setPageIndex(index);
                 _isShrink = true;
               }
             });
-            function();
           },
-          icon: Icon(
-            icon,
-            color: Colors.white,
+          icon: SvgPicture.asset(
+            iconPath,
           ),
         ),
         Text(
           title,
-          style: GoogleFonts.inter(color: Colors.white),
+          style: TextStyle(
+              fontSize: 9, fontWeight: FontWeight.w500, color: Colors.white),
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
       ],
     );
   }
@@ -112,6 +116,10 @@ class _BottomNavBarState extends State<BottomNavBar>
 
   @override
   Widget build(BuildContext context) {
+    var setPageIndex =
+        Provider.of<TabsNavigationProvider>(context).setPageIndex;
+    int selectedScreenIndex =
+        Provider.of<TabsNavigationProvider>(context).selectedScreenIndex;
     final size = MediaQuery.of(context).size;
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
@@ -134,39 +142,50 @@ class _BottomNavBarState extends State<BottomNavBar>
                   Container(
                     width: size.width * 0.2,
                     child: _textIconButtonBuilder(
-                        MyFlutterApp.home, 'Home', () {},
-                        index: 0),
+                        'assets/icons/home.svg', TITLE_HOME, () {},
+                        index: 0,
+                        selectedScreenIndex: selectedScreenIndex,
+                        setPageIndex: setPageIndex),
                   ),
                   Container(
                     width: size.width * 0.2,
                     child: _textIconButtonBuilder(
-                        FontAwesomeIcons.search, 'Tìm kiếm', () {},
-                        index: 1),
+                        'assets/icons/doc.svg', TITLE_DOC, () {},
+                        index: 1,
+                        selectedScreenIndex: selectedScreenIndex,
+                        setPageIndex: setPageIndex),
                   ),
                   Container(
                     width: size.width * 0.2,
                     child: _textIconButtonBuilder(
-                        FontAwesomeIcons.calendar, 'Sự kiện', () {},
-                        index: 2),
+                        'assets/icons/event.svg', TITLE_EVENTS, () {},
+                        index: 2,
+                        selectedScreenIndex: selectedScreenIndex,
+                        setPageIndex: setPageIndex),
                   ),
                   Container(
                     width: size.width * 0.2,
                     child: _textIconButtonBuilder(
-                        MyFlutterApp.blog, 'Blog', () {},
-                        index: 3),
+                        'assets/icons/blog.svg', TITLE_BLOGS, () {},
+                        index: 3,
+                        selectedScreenIndex: selectedScreenIndex,
+                        setPageIndex: setPageIndex),
                   ),
                   Container(
                     height: size.height * 0.08,
                     width: size.width * 0.2,
                     child: _textIconButtonBuilder(
                         _isShrink
-                            ? Icons.format_list_bulleted
-                            : FontAwesomeIcons.windowClose,
+                            ? 'assets/icons/more.svg'
+                            : 'assets/icons/close.svg',
                         'Mở rộng', () {
                       setState(() {
                         _isShrink = !_isShrink;
                       });
-                    }, index: 8),
+                    },
+                        index: 8,
+                        selectedScreenIndex: selectedScreenIndex,
+                        setPageIndex: setPageIndex),
                   ),
                 ],
               ),
@@ -181,32 +200,40 @@ class _BottomNavBarState extends State<BottomNavBar>
                     width: size.width * 0.2,
                     child: FittedBox(
                       child: _extendedTextIconButtonBuilder(
-                          MyFlutterApp.mark, 'Đã lưu', () {},
-                          index: 4),
+                          'assets/icons/save.svg', TITLE_SAVE,
+                          index: 4,
+                          selectedScreenIndex: selectedScreenIndex,
+                          setPageIndex: setPageIndex),
                     ),
                   ),
                   Container(
                     width: size.width * 0.2,
                     child: FittedBox(
                       child: _extendedTextIconButtonBuilder(
-                          MyFlutterApp.member, 'Thành viên', () {},
-                          index: 5),
+                          'assets/icons/member.svg', TITLE_MEMBERS,
+                          index: 5,
+                          selectedScreenIndex: selectedScreenIndex,
+                          setPageIndex: setPageIndex),
                     ),
                   ),
                   Container(
                     width: size.width * 0.2,
                     child: FittedBox(
                       child: _extendedTextIconButtonBuilder(
-                          FontAwesomeIcons.trophy, 'Sản phẩm', () {},
-                          index: 6),
+                          'assets/icons/product.svg', TITLE_PRODUCTS,
+                          index: 6,
+                          selectedScreenIndex: selectedScreenIndex,
+                          setPageIndex: setPageIndex),
                     ),
                   ),
                   Container(
                     width: size.width * 0.2,
                     child: FittedBox(
                       child: _extendedTextIconButtonBuilder(
-                          MyFlutterApp.info, 'Thông tin', () {},
-                          index: 7),
+                          'assets/icons/info.svg', TITLE_INFO,
+                          index: 7,
+                          selectedScreenIndex: selectedScreenIndex,
+                          setPageIndex: setPageIndex),
                     ),
                   ),
                   Container(

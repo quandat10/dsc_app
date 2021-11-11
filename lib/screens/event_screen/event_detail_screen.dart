@@ -1,11 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/icons/my_flutter_app_icons.dart';
+import 'package:dsc_app/models/event/event_model.dart';
+import 'package:dsc_app/providers/events_provider.dart';
+import 'package:dsc_app/screens/web_view_screen.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'widgets/event_background_item.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventDetailScreen extends StatelessWidget {
+  static const tag = '/event-detail';
+
   const EventDetailScreen({Key? key}) : super(key: key);
 
   Widget _descriptionItem(
@@ -76,6 +84,13 @@ class EventDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _event = ModalRoute.of(context)!.settings.arguments as EventModel;
+    String speakers = _event.guests.fold('', (previousValue, element) {
+      if (element.role == 'speaker') {
+        return previousValue + element.name + ' (' + element.company + '), ';
+      } else
+        return previousValue;
+    });
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -85,9 +100,17 @@ class EventDetailScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
+              floating: true,
+              snap: true,
               automaticallyImplyLeading: true,
-              pinned: false,
               iconTheme: IconThemeData(color: Colors.white),
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.arrow_back_ios),
+                color: Colors.white,
+              ),
               title: Text(
                 'SỰ KIỆN',
                 style: TextStyle(
@@ -97,30 +120,90 @@ class EventDetailScreen extends StatelessWidget {
                     color: Colors.white),
               ),
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    MyFlutterApp.mark,
-                    size: 24,
-                  ),
+                Consumer<EventsProvider>(
+                  builder: (context, data, child) {
+                    return IconButton(
+                      onPressed: () {
+                        data.savedEvents
+                                .any((element) => element.id == _event.id)
+                            ? data.removeEventFromList(_event)
+                            : data.addEventToSaveList(_event);
+                      },
+                      icon: Icon(
+                        data.savedEvents
+                                .any((element) => element.id == _event.id)
+                            ? FontAwesomeIcons.solidBookmark
+                            : FontAwesomeIcons.bookmark,
+                        size: 20,
+                        color: Colors.white,
+                      ),
+                    );
+                  },
                 ),
               ],
               expandedHeight: 210,
               flexibleSpace: FlexibleSpaceBar(
                 collapseMode: CollapseMode.pin,
-                background: EventBackgroundItem(),
+                background: SizedBox(
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 240,
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: _event.imageUrl,
+                            placeholder: (_, url) => const Center(
+                                child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        height: 240,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xff0D253C), Color(0x000D253C)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(50),
+                            ),
+                          ),
+                        ),
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             SliverToBoxAdapter(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                    color: Colors.white),
+                decoration: BoxDecoration(color: Colors.white),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Workshop: Học máy và Trí tuệ nhân tạo',
+                      _event.title,
                       style: TextStyle(
                           color: ERROR_COLOR,
                           fontSize: 28,
@@ -131,15 +214,17 @@ class EventDetailScreen extends StatelessWidget {
                       height: 10,
                     ),
                     _descriptionItem(
-                        title: 'Thứ ba, 12/12/2021',
-                        subtitle: 'Sáng, 7 giờ 00',
+                        title: DateFormat.yMEd()
+                            .format(DateTime.parse(_event.time)),
+                        subtitle:
+                            DateFormat.jm().format(DateTime.parse(_event.time)),
                         icon: FontAwesomeIcons.calendar),
                     const SizedBox(
                       height: 10,
                     ),
                     _descriptionItem(
-                        title: 'National Innovation Center',
-                        subtitle: '6 Hoàng Diệu, Quán Thánh, Ba Đình, Hà Nội',
+                        title: _event.location.name,
+                        subtitle: _event.location.address,
                         icon: Icons.add_location),
                     const SizedBox(
                       height: 30,
@@ -155,48 +240,28 @@ class EventDetailScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    _eventInfoItem(
-                        'Đơn vị tổ chức: ', 'GDG Hanoi, DSC - HUST, NICS'),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _eventInfoItem('Khách mời/Diễn giả: ',
-                        'Ba Ngoc, Thanh Ngan, GDG Hanoi'),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    _eventInfoItem('Mô tả: ', '''
-Lĩnh vực Học máy và trí tuệ nhân tạo đang phát triển mạnh mẽ và tạo ra nhiều cơ hội cho ngành công nghệ thông tin, đặc biệt đối với các nước đang phát triển như Việt Nam. Vậy, các bạn trẻ đam mê lĩnh vực này hoặc đơn giản muốn dấn thân thử thách những điều mới, bạn đã có kế hoạch gì cho mình trên hành trình này chưa?
-❓Nếu bạn là:
-✨ Sinh viên năng động, nhiệt huyết và sẵn sàng dấn thân vào mọi thử thách
-✨ Sinh viên năm 3, năm 4 đang đứng trước những khó khăn cho kỳ thực tập giữa khóa hay sự nghiệp lâu dài
-✨ Có khả năng sáng tạo, học hỏi, cầu tiến và tinh thần trách nhiệm cao.
-➤ Đừng bỏ qua cơ hội tham gia cuộc hành trình lần này do TensorFlow User Group Vietnam , GDG Hà Nội và Google Developer Student Clubs HUST với sự hợp tác cùng Trung Tâm Đổi Mới Sáng Tạo Quốc gia tổ chức. Tất cả những thắc mắc sẽ được giải đáp trong chuyến tàu DSC HUST- 1004 với chủ đề: 𝐌𝐀𝐂𝐇𝐈𝐍𝐄 𝐋𝐄𝐀𝐑𝐍𝐈𝐍𝐆 𝐀𝐍𝐃 𝐀𝐈
-💌 Link đăng ký: https://forms.gle/65Jd3JPHHcQadL3h7
-🔥 Tham gia hành trình, bạn sẽ nhận được:
-🤟 Cơ hội để có một cái nhìn rõ nét về bước đầu cho ngành Học Máy và Trí Tuệ Nhân Tạo.
-🤟Được huấn luyện bởi 3 Google Developer Expert mảng Học Máy và nhận chứng nhận tham gia và các phần quà khác.
-🤟Được lắng nghe những chia sẻ vô cùng thực tế từ đội ngũ những người có chuyên môn cao trong lĩnh vực Học máy và AI.
-🎁 Ngoài ra còn có thêm nhiều phần quà hấp dẫn và một bất ngờ nho nhỏ dành cho những bạn tham gia workshop nữa đó!
-⭕️Thông tin về buổi workshop:
-⏱ Timeline sự kiện: 9am - 4pm, ngày 10/4/2021
-- 8h45 - 9h30: Check-in sự kiện.
-- 9h30 - 10h00: Giới thiệu về Học máy, Trí tuệ Nhân tạo và các tài nguyên liên quan.
-- 10h00 - 12h00: Workshop: Căn bản về Học Máy và Trí Tuệ Nhân Tạo.
-- 12h - 13h30: Nghỉ trưa.
-- 13h30 - 15h30: Các bạn chọn 1 trong 2 workshop dưới đây để tham gia:
-+ Demo Question Answering
-+ Demo Image Captioning
-- 15h30 - 16h00: Chia tay, trao quà và certificate
-🔻 Địa điểm: Trung tâm Đổi mới sáng tạo Quốc gia - NIC, Bộ Kế hoạch và Đầu tư, ngõ 7 Tôn Thất Thuyết, Cầu Giấy, Hà Nội.
-🥰 Hẹn gặp tất cả các bạn tại buổi workshop!
----------------------------------------------------
-Mọi thông tin chi tiết vui lòng liên hệ:
-➤ Hotline: 0378283131
-➤ Email: dsc.hust.2020@gmail.com hoặc hello@dsc-hust.club
-➤ Website : dsc-hust.club
-➤ Page: Developer Student Club - HUST's Students
-                    '''),
+                    // _eventInfoItem(
+                    //     'Đơn vị tổ chức: ', 'GDG Hanoi, DSC - HUST, NICS'),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    if (_event.guests.isNotEmpty)
+                      _eventInfoItem(
+                          'Host/MC: ',
+                          _event.guests
+                              .firstWhere((element) => element.role == 'host')
+                              .name),
+                    if (_event.guests.isNotEmpty)
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    if (speakers != '')
+                      _eventInfoItem('Khách mời/Diễn giả: ', speakers),
+                    if (speakers != '')
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    _eventInfoItem('Mô tả: ', _event.description),
                   ],
                 ),
               ),
@@ -211,20 +276,32 @@ Mọi thông tin chi tiết vui lòng liên hệ:
                   children: [
                     Flexible(
                       flex: 2,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: double.infinity,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: PRIMARY_COLOR, width: 1),
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                        child: Text(
-                          'Xem thêm',
-                          style: TextStyle(
-                              color: ERROR_COLOR,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_event.eventUrl.info == '') {
+                            Fluttertoast.showToast(
+                                msg: 'Sự kiện hiện tại chưa có link!',
+                                timeInSecForIosWeb: 2,
+                                gravity: ToastGravity.CENTER);
+                          } else {
+                            await launch(_event.eventUrl.info);
+                          }
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: double.infinity,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: PRIMARY_COLOR, width: 1),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: Text(
+                            'Xem thêm',
+                            style: TextStyle(
+                                color: ERROR_COLOR,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                     ),
@@ -233,19 +310,31 @@ Mọi thông tin chi tiết vui lòng liên hệ:
                     ),
                     Flexible(
                       flex: 3,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: double.infinity,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            gradient: GRADIENT_01),
-                        child: Text(
-                          'Đăng ký',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_event.eventUrl.register == '') {
+                            Fluttertoast.showToast(
+                                msg: 'Sự kiện hiện tại chưa có link đăng ký!',
+                                timeInSecForIosWeb: 2,
+                                gravity: ToastGravity.CENTER);
+                          } else {
+                            await launch(_event.eventUrl.register);
+                          }
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: double.infinity,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(14),
+                              gradient: GRADIENT_01),
+                          child: Text(
+                            'Đăng ký',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                     ),

@@ -5,15 +5,35 @@ import 'package:dsc_app/models/member/member_model.dart';
 import 'package:http/http.dart' as http;
 
 class MembersApi {
-  Future<List<MemberModel>> getMembersGen({required int gen}) async {
+  Future<List<MemberModel>> getCoreTeamMember({required int pageKey, int size = 20}) async {
     List<MemberModel> members = <MemberModel>[];
     var request = http.Request('GET',
-        Uri.parse('http://188.166.219.131:8000/api/v1/members/gen-$gen?page=0&size=100'));
+        Uri.parse('http://188.166.219.131:8000/api/v1/members/core-team?page=$pageKey&size=$size'));
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       var data = json.decode(await response.stream.bytesToString());
       if (data['status'] == 200) {
+        return data["result"]
+            .map<MemberModel>((json) => MemberModel.fromJson(json))
+            .toList();
+      }
+    } else {
+      print(response.reasonPhrase);
+    }
+    return members;
+  }
+
+  Future<List<MemberModel>> getMembersGen({required int gen, required int pageKey, int size = 20}) async {
+    List<MemberModel> members = <MemberModel>[];
+    var request = http.Request('GET',
+        Uri.parse('http://188.166.219.131:8000/api/v1/members/gen-$gen?page=$pageKey&size=$size'));
+
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      var data = json.decode(await response.stream.bytesToString());
+      if (data['status'] == 200) {
+        print(data);
         return data["result"]
             .map<MemberModel>((json) => MemberModel.fromJson(json))
             .toList();

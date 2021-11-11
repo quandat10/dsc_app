@@ -1,14 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/icons/my_flutter_app_icons.dart';
+import 'package:dsc_app/models/event/event_model.dart';
+import 'package:dsc_app/providers/events_provider.dart';
 import 'package:dsc_app/screens/event_screen/event_detail_screen.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class EventItem extends StatelessWidget {
-  const EventItem() : super();
+class EventItem extends StatefulWidget {
+  EventModel _event;
 
+  EventItem(this._event);
+
+  @override
+  State<EventItem> createState() => _EventItemState();
+}
+
+class _EventItemState extends State<EventItem> {
   Widget _subText(IconData icon, String title) {
     return Row(
       children: [
@@ -33,6 +44,8 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eventsProvider = Provider.of<EventsProvider>(context);
+    var savedEvents = eventsProvider.savedEvents;
     final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
@@ -40,9 +53,8 @@ class EventItem extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => EventDetailScreen(),
-              ));
+              Navigator.of(context)
+                  .pushNamed(EventDetailScreen.tag, arguments: widget._event);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -63,8 +75,8 @@ class EventItem extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: CachedNetworkImage(
-                        fit: BoxFit.fitHeight,
-                        imageUrl: TEST_EVENT_SCREEN_IMAGE,
+                        fit: BoxFit.cover,
+                        imageUrl: widget._event.imageUrl,
                         placeholder: (_, url) =>
                             const Center(child: CircularProgressIndicator()),
                         errorWidget: (context, url, error) => Icon(Icons.error),
@@ -79,7 +91,7 @@ class EventItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Workshop Học máy và Trí tuệ nhân tạo',
+                          widget._event.title,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: TextStyle(
@@ -90,12 +102,14 @@ class EventItem extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
-                        _subText(FontAwesomeIcons.clock, 'Thứ Ba, 12/12/2021'),
+                        _subText(FontAwesomeIcons.clock,
+                            '${DateFormat.yMEd().add_jm().format(DateTime.parse(widget._event.time))}'),
                         SizedBox(
                           height: 10,
                         ),
-                        _subText(Icons.add_location,
-                            '6 Hoàng Diệu, Quán Thánh, Ba Đình, Hà Nội'),
+                        if (widget._event.location.address != '')
+                          _subText(Icons.add_location,
+                              widget._event.location.address),
                       ],
                     ),
                   )
@@ -116,14 +130,14 @@ class EventItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    '10',
+                    DateFormat.d().format(DateTime.parse(widget._event.time)),
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
                   Text(
-                    'June',
+                    DateFormat.MMM().format(DateTime.parse(widget._event.time)),
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -142,10 +156,19 @@ class EventItem extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Color(0xE5FFADAD),
                   borderRadius: BorderRadius.circular(10)),
-              child: Icon(
-                MyFlutterApp.mark,
-                size: 24,
-                color: Colors.white,
+              child: IconButton(
+                onPressed: () {
+                  savedEvents.any((element) => element.id == widget._event.id)
+                      ? eventsProvider.removeEventFromList(widget._event)
+                      : eventsProvider.addEventToSaveList(widget._event);
+                },
+                icon: Icon(
+                  savedEvents.any((element) => element.id == widget._event.id)
+                      ? FontAwesomeIcons.solidBookmark
+                      : FontAwesomeIcons.bookmark,
+                  size: 20,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

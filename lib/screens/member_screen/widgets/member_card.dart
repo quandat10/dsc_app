@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/models/member/member_model.dart';
-import 'package:dsc_app/screens/event_screen/widgets/member_department_chips.dart';
+import 'package:dsc_app/screens/member_screen/widgets/member_department_chips.dart';
 import 'package:dsc_app/screens/member_screen/member_detail_screen.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/urls.dart';
@@ -39,20 +39,17 @@ class MemberCard extends StatelessWidget {
                       topRight: Radius.circular(12),
                       bottomLeft: Radius.circular(8),
                       bottomRight: Radius.circular(8)),
-                  child: Hero(
-                    tag: member.id,
-                    child: CachedNetworkImage(
-                      height: MediaQuery.of(context).size.width * 0.3,
-                      width: double.infinity,
-                      imageUrl: member.avatarUrl,
+                  child: CachedNetworkImage(
+                    height: MediaQuery.of(context).size.width * 0.3,
+                    width: double.infinity,
+                    imageUrl: member.avatarUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (_, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (_, error, url) => CachedNetworkImage(
+                      imageUrl: DEFAULT_IMAGE_AVATAR,
                       fit: BoxFit.cover,
-                      placeholder: (_, url) => const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (_, error, url) => CachedNetworkImage(
-                        imageUrl: DEFAULT_IMAGE_AVATAR,
-                        fit: BoxFit.cover,
-                      ),
                     ),
                   ),
                 ),
@@ -84,20 +81,25 @@ class MemberCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, left: 5),
-                      child: Text(
-                        member.name,
-                        style: TextStyle(
-                            color: MAIN_COLOR,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600),
+                      padding: const EdgeInsets.fromLTRB(10,5,10,0),
+                      child: FittedBox(
+                        child: Text(
+                          member.name,
+                          style: TextStyle(
+                              color: MAIN_COLOR,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                     const SizedBox(
                       height: 5,
                     ),
-                    MemberDepartmentChips(
-                      department: member.department,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: MemberDepartmentChips(
+                        department: member.department, isDetail: false,
+                      ),
                     ),
                   ],
                 ),

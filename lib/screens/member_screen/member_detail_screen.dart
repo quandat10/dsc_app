@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/apis/members_api.dart';
-import 'package:dsc_app/icons/my_flutter_app_icons.dart';
 import 'package:dsc_app/models/member/member_detail_model.dart';
-import 'package:dsc_app/screens/event_screen/widgets/member_department_chips.dart';
+import 'package:dsc_app/screens/member_screen/widgets/member_department_chips.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/urls.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MemberDetailScreen extends StatelessWidget {
   static const tag = '/member-detail';
@@ -34,15 +37,11 @@ class MemberDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _descriptionItem({required String title, required IconData icon}) {
+  Widget _descriptionItem({required String title, required String icon}) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          color: PRIMARY_COLOR,
-          size: 20,
-        ),
+        SvgPicture.asset('assets/icons/$icon'),
         SizedBox(
           width: 20,
         ),
@@ -59,32 +58,102 @@ class MemberDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _extraInfoItem(MemberDetailModel member) {
+  Widget _extraInfoItem(MemberDetailModel member, BuildContext context) {
     return Wrap(
       children: [
         if (member.memberExtraInfo
                 .firstWhere((element) => element.key == 'githubUrl')
                 .value !=
             '')
-          Wrap(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(FontAwesomeIcons.github),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-            ],
-          ),
+          if (member.name == 'Lương Đặng Hải Đăng')
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    final url = member.memberExtraInfo
+                        .firstWhere((element) => element.key == 'githubUrl')
+                        .value;
+                    await launch(url);
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/icons/linkedin.svg',
+                    color: Colors.redAccent,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+              ],
+            ),
+        if (member.memberExtraInfo
+                .firstWhere((element) => element.key == 'githubUrl')
+                .value !=
+            '')
+          if (member.name != 'Lương Đặng Hải Đăng')
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    final url = member.memberExtraInfo
+                        .firstWhere((element) => element.key == 'githubUrl')
+                        .value;
+                    await launch(url);
+                  },
+                  icon: SvgPicture.asset('assets/icons/github.svg'),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+              ],
+            ),
         if (member.email != '')
-          Wrap(
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                onPressed: () {},
-                icon: Icon(FontAwesomeIcons.google),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (ctx) => Dialog(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                member.email,
+                              ),
+                            ),
+                            IconButton(
+                                onPressed: () async {
+                                  Clipboard.setData(
+                                      ClipboardData(text: member.email));
+                                  await Fluttertoast.showToast(
+                                      msg: "Copied to clipboard!",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 2,
+                                      fontSize: 16.0);
+                                },
+                                icon: Icon(
+                                  FontAwesomeIcons.copy,
+                                  size: 20,
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                icon: SvgPicture.asset(
+                  'assets/icons/google.svg',
+                  color: PRIMARY_COLOR,
+                ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
             ],
@@ -93,13 +162,22 @@ class MemberDetailScreen extends StatelessWidget {
                 .firstWhere((element) => element.key == 'facebookUrl')
                 .value !=
             '')
-          Wrap(
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                onPressed: () {},
-                icon: Icon(FontAwesomeIcons.facebook),
+                onPressed: () async {
+                  final url = member.memberExtraInfo
+                      .firstWhere((element) => element.key == 'facebookUrl')
+                      .value;
+                  await launch(url);
+                },
+                icon: SvgPicture.asset(
+                  'assets/icons/facebook.svg',
+                  color: Colors.blue.shade900,
+                ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
             ],
@@ -108,17 +186,25 @@ class MemberDetailScreen extends StatelessWidget {
                 .firstWhere((element) => element.key == 'instagramUrl')
                 .value !=
             '')
-          Wrap(
+          Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final url = member.memberExtraInfo
+                      .firstWhere((element) => element.key == 'instagramUrl')
+                      .value;
+                  await launch(url);
+                },
                 icon: Icon(FontAwesomeIcons.instagram),
+                iconSize: 27,
+                color: Colors.redAccent,
               ),
               SizedBox(
                 width: 20,
               ),
             ],
-          )
+          ),
       ],
     );
   }
@@ -145,35 +231,37 @@ class MemberDetailScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
-                          letterSpacing: -1,
+                          letterSpacing: -0.48,
                           color: Colors.white),
                     ),
                     iconTheme: IconThemeData(color: Colors.white),
+                    leading: IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(Icons.arrow_back_ios),
+                      color: Colors.white,
+                    ),
                     expandedHeight: 210,
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.pin,
                       background: Stack(
                         children: [
-                          Hero(
-                            tag: member.id,
-                            child: CachedNetworkImage(
+                          CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: member.avatarUrl,
+                            width: MediaQuery.of(context).size.width,
+                            height: 250,
+                            placeholder: (_, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (_, error, url) => CachedNetworkImage(
+                              imageUrl: DEFAULT_IMAGE_AVATAR,
                               fit: BoxFit.cover,
-                              imageUrl: member.avatarUrl,
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * 0.3,
                               placeholder: (_, url) => const Center(
                                 child: CircularProgressIndicator(),
-                              ),
-                              errorWidget: (_, error, url) =>
-                                  CachedNetworkImage(
-                                imageUrl: DEFAULT_IMAGE_AVATAR,
-                                fit: BoxFit.cover,
-                                width: MediaQuery.of(context).size.width,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                placeholder: (_, url) => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
                               ),
                             ),
                           ),
@@ -228,7 +316,8 @@ class MemberDetailScreen extends StatelessWidget {
                           Wrap(
                             children: [
                               Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 3),
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                   color: PRIMARY_COLOR,
@@ -244,6 +333,7 @@ class MemberDetailScreen extends StatelessWidget {
                               ),
                               MemberDepartmentChips(
                                 department: member.department,
+                                isDetail: true,
                               ),
                             ],
                           ),
@@ -253,10 +343,15 @@ class MemberDetailScreen extends StatelessWidget {
                           Text(
                             member.name,
                             style: TextStyle(
-                                color: ERROR_COLOR,
                                 fontSize: 36,
                                 fontWeight: FontWeight.w700,
-                                letterSpacing: -1),
+                                letterSpacing: -0.72,
+                                foreground: Paint()
+                                  ..shader = LinearGradient(colors: [
+                                    Color.fromRGBO(252, 96, 118, 1),
+                                    Color.fromRGBO(252, 154, 68, 1)
+                                  ]).createShader(
+                                      Rect.fromLTWH(0.0, 0.0, 200.0, 70.0))),
                           ),
                           const SizedBox(
                             height: 10,
@@ -278,7 +373,7 @@ class MemberDetailScreen extends StatelessWidget {
                             height: 20,
                           ),
                           _descriptionItem(
-                              title: member.role, icon: FontAwesomeIcons.male),
+                              title: member.role, icon: 'role.svg'),
                           const SizedBox(
                             height: 10,
                           ),
@@ -292,7 +387,7 @@ class MemberDetailScreen extends StatelessWidget {
                                     .firstWhere(
                                         (element) => element.key == 'hobby')
                                     .value,
-                                icon: Icons.favorite),
+                                icon: 'favorite.svg'),
                           const SizedBox(
                             height: 10,
                           ),
@@ -306,7 +401,7 @@ class MemberDetailScreen extends StatelessWidget {
                                     .firstWhere(
                                         (element) => element.key == 'major')
                                     .value,
-                                icon: FontAwesomeIcons.graduationCap),
+                                icon: 'major.svg'),
                           const SizedBox(
                             height: 20,
                           ),
@@ -317,7 +412,7 @@ class MemberDetailScreen extends StatelessWidget {
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600),
                           ),
-                          _extraInfoItem(member),
+                          _extraInfoItem(member, context),
                           const SizedBox(
                             height: 20,
                           ),
@@ -337,7 +432,8 @@ class MemberDetailScreen extends StatelessWidget {
                               '')
                             Text(
                               member.memberExtraInfo
-                                  .firstWhere((element) => element.key == 'bio').value,
+                                  .firstWhere((element) => element.key == 'bio')
+                                  .value,
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,

@@ -20,8 +20,8 @@ class _IntroScreenState extends State<IntroScreen> {
   List<PageViewModel> get _introPages {
     return [
       pageView(TITLE_INTRO_1,TITLE_CONTENT_1,IMG_EVENT_SCREEN),
-      pageView(TITLE_INTRO_2,TITLE_CONTENT_2,IMG_MEMBER_SCREEN),
-      pageView(TITLE_INTRO_3,TITLE_CONTENT_3,IMG_BLOG_SCREEN),
+      pageView(TITLE_INTRO_2,TITLE_CONTENT_2,IMG_BLOG_SCREEN),
+      pageView(TITLE_INTRO_3,TITLE_CONTENT_3,IMG_MEMBER_SCREEN),
     ];
   }
 

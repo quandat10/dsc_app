@@ -8,24 +8,22 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class ExtendedMemberScreen extends StatefulWidget {
-  static const tag = '/extended-member';
+class ExtendedCoreTeamScreen extends StatefulWidget {
+  static const tag = '/extended-core-team';
 
-  const ExtendedMemberScreen({Key? key}) : super(key: key);
+  const ExtendedCoreTeamScreen({Key? key}) : super(key: key);
 
   @override
-  State<ExtendedMemberScreen> createState() => _ExtendedMemberScreenState();
+  State<ExtendedCoreTeamScreen> createState() => _ExtendedCoreTeamScreenState();
 }
 
-class _ExtendedMemberScreenState extends State<ExtendedMemberScreen> {
+class _ExtendedCoreTeamScreenState extends State<ExtendedCoreTeamScreen> {
   PagingController<int, MemberModel> _pagingController =
       PagingController(firstPageKey: 0);
-  var gen = 0;
   bool firstLoad = true;
 
   didChangeDependencies() {
     if (firstLoad) {
-      gen = ModalRoute.of(context)!.settings.arguments as int;
       _pagingController.addPageRequestListener((pageKey) {
         _fetchPage(pageKey);
       });
@@ -41,8 +39,7 @@ class _ExtendedMemberScreenState extends State<ExtendedMemberScreen> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await MembersApi()
-          .getMembersGen(gen: gen, pageKey: pageKey, size: 20);
+      final newItems = await MembersApi().getCoreTeamMember(pageKey: pageKey);
       final isLastPage = newItems.length < 20;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -128,7 +125,7 @@ class _ExtendedMemberScreenState extends State<ExtendedMemberScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
-                  'Gen $gen',
+                  'Core Team',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w700,
@@ -160,7 +157,8 @@ class _ExtendedMemberScreenState extends State<ExtendedMemberScreen> {
                     position: index,
                     columnCount: 2,
                     child: ScaleAnimation(
-                      child: FadeInAnimation(child: MemberCard(
+                      child: FadeInAnimation(
+                          child: MemberCard(
                         member: item,
                       )),
                     ),

@@ -1,11 +1,8 @@
 import 'package:dsc_app/utils/colors.dart';
-import 'package:dsc_app/utils/strings.dart';
 import 'package:flutter/material.dart';
 
-class ProductsScreen extends StatelessWidget {
-  static const tag = '/products';
-
-  ProductsScreen({Key? key}) : super(key: key);
+class DocScreen extends StatelessWidget {
+  const DocScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +15,7 @@ class ProductsScreen extends StatelessWidget {
             width: double.infinity,
             margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
             child: const Text(
-              'Sản phẩm',
+              'Tài liệu',
               style: TextStyle(
                   fontSize: 28,
                   color: ERROR_COLOR,
