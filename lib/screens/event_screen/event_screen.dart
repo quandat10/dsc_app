@@ -24,12 +24,6 @@ class _EventScreenState extends State<EventScreen> {
   var _sortByState = SortByState.All;
   var _sortByTime = SortByTime.All;
   var _chosenDate = DateTime.now();
-  var isToday = false;
-  var isThisMonth = false;
-  var isThisYear = false;
-  var isFromDatePicker = false;
-  var isComing = false;
-  var isPast = false;
   PagingController<int, EventModel> _pagingController =
       PagingController(firstPageKey: 0);
 
@@ -41,7 +35,7 @@ class _EventScreenState extends State<EventScreen> {
     super.initState();
   }
 
-  dispose(){
+  dispose() {
     _pagingController.dispose();
     super.dispose();
   }
@@ -49,7 +43,7 @@ class _EventScreenState extends State<EventScreen> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await EventsApi().getEvents(pageKey: pageKey);
-      final isLastPage = newItems.length < 20;
+      final isLastPage = newItems.length < 5;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -92,14 +86,10 @@ class _EventScreenState extends State<EventScreen> {
           border: Border.all(color: backgroundColor, width: 1),
           color: _sortByState == check ? backgroundColor : Colors.white,
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 13,
-            color: _sortByState == check ? Colors.white : textColor,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        child: Text(text,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  color: _sortByState == check ? Colors.white : textColor,
+                )),
       ),
     );
   }
@@ -263,14 +253,11 @@ class _EventScreenState extends State<EventScreen> {
                             PRIMARY_COLOR, SortByState.Past, _setState),
                       ],
                     ),
-                    Text(
-                      'Thời gian',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: SECONDARY_COLOR,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    Text('Thời gian',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3!
+                            .copyWith(color: SECONDARY_COLOR)),
                     Wrap(
                       children: [
                         _sortByTimeButton('Hôm nay', SECONDARY_COLOR,
@@ -312,10 +299,10 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                           child: Text(
                             'Thiết lập lại',
-                            style: TextStyle(
-                                color: SECONDARY_COLOR,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5!
+                                .copyWith(color: MAIN_COLOR),
                           ),
                         ),
                       ),
@@ -339,10 +326,10 @@ class _EventScreenState extends State<EventScreen> {
                               gradient: GRADIENT_01),
                           child: Text(
                             'Áp dụng',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5!
+                                .copyWith(color: Colors.white),
                           ),
                         ),
                       ),
@@ -449,13 +436,12 @@ class _EventScreenState extends State<EventScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Sự kiện',
-                    style: TextStyle(
-                        fontSize: 36,
-                        color: ERROR_COLOR,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.72),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1!
+                        .copyWith(color: ERROR_COLOR),
                   ),
                   InkWell(
                     onTap: _showSortBottomSheet,
@@ -473,8 +459,10 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                           Text(
                             "Lọc",
-                            style:
-                                TextStyle(color: PRIMARY_COLOR, fontSize: 15),
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(color: PRIMARY_COLOR),
                           ),
                         ],
                       ),

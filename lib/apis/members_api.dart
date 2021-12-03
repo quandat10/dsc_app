@@ -5,7 +5,7 @@ import 'package:dsc_app/models/member/member_model.dart';
 import 'package:http/http.dart' as http;
 
 class MembersApi {
-  Future<List<MemberModel>> getCoreTeamMember({required int pageKey, int size = 20}) async {
+  Future<List<MemberModel>> getCoreTeamMember({required int pageKey, int size = 5}) async {
     List<MemberModel> members = <MemberModel>[];
     var request = http.Request('GET',
         Uri.parse('http://188.166.219.131:8000/api/v1/members/core-team?page=$pageKey&size=$size'));
@@ -24,7 +24,7 @@ class MembersApi {
     return members;
   }
 
-  Future<List<MemberModel>> getMembersGen({required int gen, required int pageKey, int size = 20}) async {
+  Future<List<MemberModel>> getMembersGen({required int gen, required int pageKey, int size = 5}) async {
     List<MemberModel> members = <MemberModel>[];
     var request = http.Request('GET',
         Uri.parse('http://188.166.219.131:8000/api/v1/members/gen-$gen?page=$pageKey&size=$size'));

@@ -61,7 +61,6 @@ class PostsItem extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.only(left: 15),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
@@ -84,9 +83,10 @@ class PostsItem extends StatelessWidget {
                               child: Text(
                                 blog.authorName,
                                 style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
                                   color: MAIN_COLOR,
                                   fontSize: 14,
-                                  letterSpacing: -1,
+                                  letterSpacing: -0.28,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -96,18 +96,14 @@ class PostsItem extends StatelessWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          blog.title,
-                          softWrap: true,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            overflow: TextOverflow.fade,
-                            color: SECONDARY_COLOR,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                        ),
+                        Text(blog.title,
+                            softWrap: true,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4!
+                                .copyWith(color: SECONDARY_COLOR)),
                         const SizedBox(
                           height: 5,
                         ),
@@ -120,8 +116,8 @@ class PostsItem extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 10.0),
                               child: Text(
-                                timeago
-                                    .format(DateTime.parse(blog.timeCreate)),
+                                timeago.format(DateTime.parse(blog.timeCreate)),
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                             ),
                           ],

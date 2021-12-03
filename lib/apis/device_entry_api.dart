@@ -21,15 +21,11 @@ class DeviceEntryApi {
   }
 
   Future<void> updateDeviceFirstEntryCheck({required String deviceID}) async {
-    var headers = {
-      'Content-Type': 'application/json'
-    };
     var request = http.Request('POST', Uri.parse('http://188.166.219.131:8000/api/v1/devices'));
     request.body = json.encode({
       "deviceId": deviceID,
       "firstEntry": false
     });
-    request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 

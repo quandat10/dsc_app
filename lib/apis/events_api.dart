@@ -7,7 +7,7 @@ class EventsApi {
   Future<List<EventModel>> getEvents({required int pageKey}) async {
     List<EventModel> events = <EventModel>[];
     var request = http.Request(
-        'GET', Uri.parse('http://188.166.219.131:8000/api/v1/events?sort=time,desc&page=$pageKey'));
+        'GET', Uri.parse('http://188.166.219.131:8000/api/v1/events?sort=time,desc&page=$pageKey&size=5'));
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {

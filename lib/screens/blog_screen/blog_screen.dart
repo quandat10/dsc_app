@@ -36,7 +36,7 @@ class _BlogScreenState extends State<BlogScreen> {
     try {
       final newItems = await BlogsApi()
           .getBlogsByTag(_filters[_chosenFilter], pageKey: pageKey);
-      final isLastPage = newItems.length < 20;
+      final isLastPage = newItems.length < 5;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

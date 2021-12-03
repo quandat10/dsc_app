@@ -42,8 +42,8 @@ class _ExtendedMemberScreenState extends State<ExtendedMemberScreen> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await MembersApi()
-          .getMembersGen(gen: gen, pageKey: pageKey, size: 20);
-      final isLastPage = newItems.length < 20;
+          .getMembersGen(gen: gen, pageKey: pageKey, size: 5);
+      final isLastPage = newItems.length < 5;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

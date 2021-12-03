@@ -40,7 +40,7 @@ class _ExtendedCoreTeamScreenState extends State<ExtendedCoreTeamScreen> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await MembersApi().getCoreTeamMember(pageKey: pageKey);
-      final isLastPage = newItems.length < 20;
+      final isLastPage = newItems.length < 5;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

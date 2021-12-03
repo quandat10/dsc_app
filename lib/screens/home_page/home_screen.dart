@@ -1,25 +1,20 @@
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dsc_app/apis/blogs_api.dart';
 import 'package:dsc_app/apis/events_api.dart';
 import 'package:dsc_app/models/blogs/blog_model.dart';
 import 'package:dsc_app/models/event/event_model.dart';
 import 'package:dsc_app/providers/tabs_navigation_provider.dart';
-import 'package:dsc_app/screens/event_screen/event_screen.dart';
 import 'package:dsc_app/screens/blog_screen/widgets/posts_item.dart';
 import 'package:dsc_app/utils/colors.dart';
-import 'package:dsc_app/utils/urls.dart';
 import 'package:dsc_app/widgets/news_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -78,7 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
     var setPageIndex = Provider
         .of<TabsNavigationProvider>(context, listen: false)
         .setPageIndex;

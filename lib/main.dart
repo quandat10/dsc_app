@@ -7,6 +7,7 @@ import 'package:dsc_app/providers/blogs_provider.dart';
 import 'package:dsc_app/providers/events_provider.dart';
 import 'package:dsc_app/providers/tabs_navigation_provider.dart';
 import 'package:dsc_app/screens/tabs_screen.dart';
+import 'package:dsc_app/utils/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isFirstEntry = true;
+  bool loading = true;
 
   @override
   void initState() {
@@ -38,15 +40,22 @@ class _MyAppState extends State<MyApp> {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       DeviceEntryApi()
           .getDeviceFirstEntryCheck(deviceID: androidInfo.androidId as String)
-          .then((value) => isFirstEntry = value);
+          .then((value) => setState(() {
+                isFirstEntry = value;
+              }));
       print(androidInfo.androidId);
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       DeviceEntryApi()
           .getDeviceFirstEntryCheck(
               deviceID: iosInfo.identifierForVendor as String)
-          .then((value) => isFirstEntry = value);
+          .then((value) => setState(() {
+                isFirstEntry = value;
+              }));
     }
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -69,24 +78,17 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           title: 'DSC App',
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            appBarTheme: AppBarTheme(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              foregroundColor: Colors.black54,
-              toolbarTextStyle: TextStyle(fontWeight: FontWeight.w900),
-            ),
-            primarySwatch: Colors.red,
-            fontFamily: 'Inter',
-            canvasColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.black),
-          ),
+          theme: brightTheme,
           home: AnimatedSplashScreen(
             animationDuration: Duration(seconds: 2),
             splashIconSize: 300,
             curve: Curves.easeInCirc,
             splash: 'assets/images/dsc_logo.png',
-            nextScreen: isFirstEntry ? IntroScreen() : TabsScreen(),
+            nextScreen: loading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : (isFirstEntry ? IntroScreen() : TabsScreen()),
             duration: 2500,
           ),
           routes: routes,

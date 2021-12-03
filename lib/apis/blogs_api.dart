@@ -88,7 +88,7 @@ class BlogsApi {
   }
 
   Future<List<BlogModel>> getBlogsByTag(String tag,
-      {required int pageKey, int pageSize = 20}) async {
+      {required int pageKey, int pageSize = 5}) async {
     var url = '';
     if (tag == 'Tất cả') {
       url =

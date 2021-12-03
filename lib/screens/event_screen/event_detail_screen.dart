@@ -1,15 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dsc_app/icons/my_flutter_app_icons.dart';
 import 'package:dsc_app/models/event/event_model.dart';
 import 'package:dsc_app/providers/events_provider.dart';
-import 'package:dsc_app/screens/web_view_screen.dart';
 import 'package:dsc_app/utils/colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../web_view_screen.dart';
 
 class EventDetailScreen extends StatelessWidget {
   static const tag = '/event-detail';
@@ -73,9 +75,7 @@ class EventDetailScreen extends StatelessWidget {
           TextSpan(
             text: info,
             style: TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w400,
-            ),
+                fontSize: 13, fontWeight: FontWeight.w400, height: 1.5),
           )
         ],
       ),
@@ -85,12 +85,6 @@ class EventDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _event = ModalRoute.of(context)!.settings.arguments as EventModel;
-    String speakers = _event.guests.fold('', (previousValue, element) {
-      if (element.role == 'speaker') {
-        return previousValue + element.name + ' (' + element.company + '), ';
-      } else
-        return previousValue;
-    });
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -240,28 +234,92 @@ class EventDetailScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    // _eventInfoItem(
-                    //     'Đơn vị tổ chức: ', 'GDG Hanoi, DSC - HUST, NICS'),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    if (_event.guests.isNotEmpty)
-                      _eventInfoItem(
-                          'Host/MC: ',
-                          _event.guests
-                              .firstWhere((element) => element.role == 'host')
-                              .name),
                     if (_event.guests.isNotEmpty)
                       const SizedBox(
                         height: 10,
                       ),
-                    if (speakers != '')
-                      _eventInfoItem('Khách mời/Diễn giả: ', speakers),
-                    if (speakers != '')
-                      const SizedBox(
-                        height: 10,
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Diễn giả/Khách mời: ',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                            )),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ..._event.guests
+                                  .map((e) => Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text.rich(TextSpan(
+                                              text: e.name,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              children: [
+                                                TextSpan(text: ' - ${e.role}'),
+                                                if (e.company != '')
+                                                  TextSpan(
+                                                      text: ' - ${e.company}')
+                                              ])),
+                                          const SizedBox(
+                                            height: 5,
+                                          )
+                                        ],
+                                      ))
+                                  .toList()
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (_event.description.substring(0, 4) != '<div')
+                      _eventInfoItem('Mô tả: ', _event.description),
+                    if (_event.description.substring(0, 4) == '<div')
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Mô tả: ',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                              )),
+                          Html(
+                              data: _event.description,
+                              onLinkTap: (url, _context, attributes, element) {
+                                showCupertinoDialog(
+                                    context: context,
+                                    builder: (ctx) => CupertinoAlertDialog(
+                                          title: Text('Chuyển tiếp'),
+                                          content: Text(
+                                              'Bạn đang được chuyển tiếp sang trang khác...'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                          WebViewScreen.tag,
+                                                          arguments: url);
+                                                },
+                                                child: Text('Đồng ý')),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(ctx).pop();
+                                                },
+                                                child: Text('Hủy bỏ')),
+                                          ],
+                                        ));
+                              })
+                        ],
                       ),
-                    _eventInfoItem('Mô tả: ', _event.description),
                   ],
                 ),
               ),

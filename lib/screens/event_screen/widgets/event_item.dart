@@ -33,10 +33,10 @@ class _EventItemState extends State<EventItem> {
         ),
         Text(
           title,
-          style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: SECONDARY_DECENT),
+          style: Theme.of(context)
+              .textTheme
+              .bodyText2!
+              .copyWith(color: SECONDARY_DECENT),
         ),
       ],
     );
@@ -90,20 +90,18 @@ class _EventItemState extends State<EventItem> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget._event.title,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        Text(widget._event.title,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .copyWith(color: Colors.black)),
                         SizedBox(
                           height: 10,
                         ),
                         _subText(FontAwesomeIcons.clock,
-                            '${DateFormat.yMEd().add_jm().format(DateTime.parse(widget._event.time))}'),
+                            '${DateFormat('E, d/M/y').add_jm().format(DateTime.parse(widget._event.time))}'),
                         SizedBox(
                           height: 10,
                         ),
@@ -131,17 +129,17 @@ class _EventItemState extends State<EventItem> {
                 children: [
                   Text(
                     DateFormat.d().format(DateTime.parse(widget._event.time)),
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(color: Colors.white),
                   ),
                   Text(
                     DateFormat.MMM().format(DateTime.parse(widget._event.time)),
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(color: Colors.white),
                   ),
                 ],
               ),
