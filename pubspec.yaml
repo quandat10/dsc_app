@@ -48,9 +48,6 @@ flutter:
     - assets/icons/
 
   fonts:
-    - family: MyFlutterApp
-      fonts:
-        - asset: assets/fonts/MyFlutterApp.ttf
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf
