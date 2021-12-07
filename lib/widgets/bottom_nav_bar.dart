@@ -1,4 +1,3 @@
-import 'package:dsc_app/icons/my_flutter_app_icons.dart';
 import 'package:dsc_app/providers/tabs_navigation_provider.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/strings.dart';
