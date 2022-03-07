@@ -1,10 +1,8 @@
-import 'package:dsc_app/icons/my_flutter_app_icons.dart';
 import 'package:dsc_app/providers/tabs_navigation_provider.dart';
 import 'package:dsc_app/utils/colors.dart';
 import 'package:dsc_app/utils/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 

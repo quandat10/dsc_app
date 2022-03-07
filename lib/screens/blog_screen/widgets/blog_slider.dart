@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dsc_app/icons/my_flutter_app_icons.dart';
 import 'package:dsc_app/models/blogs/blog_model.dart';
 import 'package:dsc_app/providers/blogs_provider.dart';
 import 'package:dsc_app/screens/blog_screen/blog_detail_screen.dart';
